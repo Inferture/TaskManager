@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ultimatetaskmanager.network.TasksRepository
 import kotlinx.android.synthetic.main.fragment_tasks.*
@@ -18,12 +19,6 @@ import kotlinx.android.synthetic.main.fragment_tasks.view.*
 
 class TasksFragment : Fragment() {
 
-    //private var model =  TasksViewModel.model
-    /*private val tasks = mutableListOf(
-        Task(id = "id_1", title = "Task 1", description = "description 1"),
-        Task(id = "id_2", title = "Task 2"),
-        Task(id = "id_3", title = "Task 3")
-    )*/
     private val tasksViewModel by lazy {
         ViewModelProviders.of(this).get(TasksViewModel::class.java)
     }
@@ -41,7 +36,6 @@ class TasksFragment : Fragment() {
 
         var tasksArrayList = savedInstanceState?.getParcelableArrayList<Task>("tasks")
         if (tasksArrayList != null) {
-            //model.tasks = tasksArrayList.toMutableList()
             tasks.removeAll(tasks)
             tasks.addAll(tasksArrayList)
             tasks_recycler_view.adapter=TasksAdapter(tasks)
@@ -92,7 +86,5 @@ class TasksFragment : Fragment() {
             tasks.addAll(tasksArrayList)
             tasks_recycler_view.adapter=TasksAdapter(tasks)
         }
-
-
     }
 }

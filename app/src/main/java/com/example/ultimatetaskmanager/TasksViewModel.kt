@@ -14,9 +14,6 @@ class TasksViewModel: ViewModel() {
 
     private val tasksRepository = TasksRepository()
     private val tasks = mutableListOf<Task>()
-    //private var model =  TasksViewModel.model
-
-
 
     fun getTasks(): LiveData<List<Task>?> {
         val tasks = MutableLiveData<List<Task>?>()
@@ -46,34 +43,4 @@ class TasksViewModel: ViewModel() {
         coroutineScope.launch { task.postValue(tasksRepository.loadUpdateTask(id, title, description)) }
         return task
     }
-
 }
-
-
-/*
-class TasksViewModel : ViewModel() {
-
-
-    companion object model
-    {
-        public  val tasks = mutableListOf<Task>(
-            Task(id = "id_1", title = "Task 1", description = "description 1"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"),
-            Task(id = "id_2", title = "Task 2"),
-            Task(id = "id_3", title = "Task 3"))
-    }
-
-
-
-}*/

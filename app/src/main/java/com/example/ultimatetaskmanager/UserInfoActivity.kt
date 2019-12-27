@@ -4,9 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -18,16 +16,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.drawToBitmap
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.example.ultimatetaskmanager.network.Api
 import com.example.ultimatetaskmanager.network.UserInfo
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.coroutines.MainScope
@@ -55,14 +49,14 @@ class UserInfoActivity : AppCompatActivity() {
         Log.i("MyStuff","create userinfoact")
 
 
-        /*userViewModel.getPicture().observe(this, Observer {
+        userViewModel.getPicture().observe(this, Observer {
 
             if (it != null) {
 
                 Glide.with(this).load(it).apply(
                     RequestOptions.circleCropTransform()).into(photo_view)
             }
-        })*/
+        })
 
         userViewModel.getUserInfos().observe(this, Observer {
 
@@ -218,6 +212,9 @@ class UserInfoActivity : AppCompatActivity() {
 
         const val READ_STORAGE_PERMISSION_CODE = 3000;
         const val READ_STORAGE_REQUEST_CODE = 4001;
+
+
+
     }
 
     private fun cancelLastname()
@@ -273,11 +270,11 @@ class UserInfoActivity : AppCompatActivity() {
         val storageIntent = Intent()
         storageIntent.setType("image/*");
         storageIntent.setAction(Intent.ACTION_PICK);
-        startActivityForResult(Intent.createChooser(storageIntent, "Select Picture"), READ_STORAGE_PERMISSION_CODE);
+        startActivityForResult(Intent.createChooser(storageIntent, "Select Picture"), READ_STORAGE_REQUEST_CODE);
     }
 
 
-    private fun askCameraPermissionAndOpenCamera() {
+    public  fun askCameraPermissionAndOpenCamera() {
 
         Log.i("MyStuff","AskCamera")
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -290,9 +287,6 @@ class UserInfoActivity : AppCompatActivity() {
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE )
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
                 Log.i("MyStuff","Checking2")
             }
         } else {
@@ -303,6 +297,7 @@ class UserInfoActivity : AppCompatActivity() {
 
     private fun openCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        Log.i("MyStuff","Intent launched")
         startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE)
     }
 
@@ -349,7 +344,7 @@ class UserInfoActivity : AppCompatActivity() {
     private fun handlePhotoTaken(data: Intent?) {
         val image = data?.extras?.get("data") as? Bitmap
         val imageBody = imageToBody(image)
-
+        Log.i("MyStuff", "about to glide")
         // Afficher l'image
         Glide.with(this).load(image).apply(
             RequestOptions.circleCropTransform()).into(photo_view)
@@ -362,10 +357,10 @@ class UserInfoActivity : AppCompatActivity() {
         {
             Log.i("MyStuff", "Update avatar ?")
             coroutineScope.launch {
-                //Api.userService.updateAvatar(imageBody)
                 userViewModel.loadUpdateAvatar(imageBody)
             }
         }
+        userViewModel.getUserInfos()
     }
 
     private fun handlePictureStorage(data: Intent?) {
@@ -389,6 +384,7 @@ class UserInfoActivity : AppCompatActivity() {
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
             })
+        userViewModel.getUserInfos()
     }
 
 
@@ -415,12 +411,13 @@ class UserInfoActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==CAMERA_PERMISSION_CODE)
+        Log.i("MyStuff","Results!!!!")
+        if(requestCode==CAMERA_REQUEST_CODE)
         {
+            Log.i("MyStuff", "about to handle")
             handlePhotoTaken(data)
         }
-        else if(requestCode== READ_STORAGE_PERMISSION_CODE)
-        {
+        else if(requestCode== READ_STORAGE_REQUEST_CODE) {
             handlePictureStorage(data)
         }
 

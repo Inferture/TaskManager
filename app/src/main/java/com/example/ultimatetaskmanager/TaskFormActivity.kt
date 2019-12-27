@@ -9,26 +9,37 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.ultimatetaskmanager.network.TasksRepository
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_task_form.*
- 
+import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_task_form.*
+
 class TaskFormActivity : AppCompatActivity() {
-
-
-    //private val tasksRepository = TasksRepository()
 
     private val tasksViewModel by lazy {
         ViewModelProviders.of(this).get(TasksViewModel::class.java)
     }
 
-    var id = "" ;
+    var id = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task_form)
 
         var numTask = -1;
+
+
+        var args = TaskFormActivityArgs.fromBundle(intent?.extras!!)//nav_host_fragment_task_form.arguments
+        numTask = args.numTask
+        id=args.id
+
+        edit_description.setText(args.description)
+        edit_title.setText(args.title)
+
 
         when {
             intent?.action == Intent.ACTION_SEND -> {
@@ -42,37 +53,16 @@ class TaskFormActivity : AppCompatActivity() {
                     {
                         intentDescription= intentText.split('\n')[1]
                     }
+                    //nav_host_fragment_task_form
                     edit_title.setText(intentTitle)
                     edit_description.setText(intentDescription)
 
                     id="outsideId"
                 }
             }
-            else ->
-            if (intent?.extras?.getInt("NumTask") != null && intent?.extras?.getString("id") != null &&
-                intent?.extras?.getString("title") != null && intent?.extras?.getString("description") != null ) {
-
-                numTask = intent.extras.getInt("NumTask");
-
-                id = intent.extras.getString("id")
-
-                val description = intent?.extras?.getString("description")
-                val title  = intent?.extras?.getString("title")
-                edit_description.setText(description)
-                edit_title.setText(title)
-
-
-                validate_task.setText("Modify")
-            }
-            else
-            {
-                id="newId"
-            }
         }
 
         validate_task.setOnClickListener({
-            val intent = Intent(it.context,MainActivity::class.java)
-
 
             val title = edit_title.text.toString()
             val description = edit_description.text.toString()
@@ -86,18 +76,17 @@ class TaskFormActivity : AppCompatActivity() {
                 EditTask(numTask,title,description)
             }
 
-            startActivity(intent)
+            nav_host_fragment_task_form.findNavController().navigate(R.id.action_taskFormFragment_to_mainActivity3)
 
         })
 
         back_from_add_task.setOnClickListener({
 
-            if(edit_title.text.toString()!="" || edit_title.text.toString()!="")
+            if(edit_title.text.toString()!="" || edit_description.text.toString()!="")
             {
                 val builder = AlertDialog.Builder(this)
                 val positiveButtonClick = { dialog: DialogInterface, which: Int ->
-                    val intent = Intent(it.context,MainActivity::class.java)
-                    startActivity(intent)
+                    nav_host_fragment_task_form.findNavController().navigate(R.id.action_taskFormFragment_to_mainActivity3)
                 }
                 val negativeButtonClick = {dialog: DialogInterface, which: Int ->
                 }
@@ -113,8 +102,7 @@ class TaskFormActivity : AppCompatActivity() {
             }
             else
             {
-                val intent = Intent(it.context,MainActivity::class.java)
-                startActivity(intent)
+                nav_host_fragment_task_form.findNavController().navigate(R.id.action_taskFormFragment_to_mainActivity3)
             }
         })
 

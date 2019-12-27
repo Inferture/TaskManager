@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.ultimatetaskmanager.network.Api
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.android.synthetic.main.fragment_header.*
 import kotlinx.coroutines.MainScope
@@ -29,8 +32,8 @@ class HeaderFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_header, container, false)
+        var view =  inflater.inflate(R.layout.fragment_header, container, false)
+        return view
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,12 +51,7 @@ class HeaderFragment : Fragment() {
     override fun onResume()
     {
         super.onResume()
-        Glide.with(this).load("https://cdn.myanimelist.net/images/anime/1153/99850.jpg").apply(
-            RequestOptions.circleCropTransform()).into(image_view)
-
-        coroutineScope.launch {
-            Api.userService.getInfo()
-        }
+        userViewModel.getUserInfos()
     }
 
     override fun onDestroy() {

@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.ultimatetaskmanager.network.Api
-import com.example.ultimatetaskmanager.network.TasksRepository
 import com.example.ultimatetaskmanager.network.UserInfo
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -32,7 +31,7 @@ class UserViewModel: ViewModel() {
 
     suspend fun loadUpdateUser(infos: UserInfo): UserInfo? {
 
-        val userResponse = Api.userService.updateUser(infos)
+        val userResponse = Api.INSTANCE.userService.updateUser(infos)
         Log.e("loadUpdateAvatar", userResponse.toString())
 
         return if (userResponse.isSuccessful) userResponse.body() else null
@@ -51,7 +50,7 @@ class UserViewModel: ViewModel() {
 
     suspend fun loadUpdateAvatar(picture: MultipartBody.Part): UserInfo? {
 
-        val userResponse = Api.userService.updateAvatar(picture)
+        val userResponse = Api.INSTANCE.userService.updateAvatar(picture)
         Log.e("loadUpdateAvatar", userResponse.toString())
 
         return if (userResponse.isSuccessful) userResponse.body() else null
@@ -69,7 +68,7 @@ class UserViewModel: ViewModel() {
     }
 
     suspend fun loadPicture(): String? {
-        val tasksResponse = Api.userService.getInfo()
+        val tasksResponse = Api.INSTANCE.userService.getInfo()
         return if (tasksResponse.isSuccessful) tasksResponse.body()?.avatar else null
     }
 
@@ -85,8 +84,7 @@ class UserViewModel: ViewModel() {
     }
 
     suspend fun loadUserInfos(): UserInfo? {
-        val tasksResponse = Api.userService.getInfo()
+        val tasksResponse = Api.INSTANCE.userService.getInfo()
         return if (tasksResponse.isSuccessful) tasksResponse.body() else null
     }
-
 }

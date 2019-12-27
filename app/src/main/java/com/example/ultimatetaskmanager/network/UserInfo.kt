@@ -12,5 +12,5 @@ data class UserInfo(
     @field:Json(name = "email")
     val email: String,
     @field:Json(name = "avatar")
-    val avatar: String
+    val avatar: String?
 )

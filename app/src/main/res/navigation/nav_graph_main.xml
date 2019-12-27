@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/mainFragment">
+
+    <activity
+        android:id="@+id/taskFormActivity"
+        android:name="com.example.ultimatetaskmanager.TaskFormActivity"
+        android:label="activity_task_form"
+        tools:layout="@layout/activity_task_form" >
+        <argument android:name="numTask"
+            app:argType="integer"
+            android:defaultValue="-1" />
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue=" " />
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+        <argument
+            android:name="description"
+            app:argType="string"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </activity>
+    <activity
+        android:id="@+id/userInfoActivity"
+        android:name="com.example.ultimatetaskmanager.UserInfoActivity"
+        android:label="activity_user_info"
+        tools:layout="@layout/activity_user_info" />
+    <activity
+        android:id="@+id/authenticationActivity"
+        android:name="com.example.ultimatetaskmanager.AuthenticationActivity"
+        android:label="AuthenticationActivity" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.ultimatetaskmanager.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_taskFormActivity"
+            app:destination="@id/taskFormActivity" />
+        <action
+            android:id="@+id/action_mainFragment_to_userInfoActivity"
+            app:destination="@id/userInfoActivity" />
+        <action
+            android:id="@+id/action_mainFragment_to_authenticationActivity"
+            app:destination="@id/authenticationActivity"
+            app:popUpTo="@+id/authenticationActivity"
+            app:popUpToInclusive="true" />
+    </fragment>
+</navigation>

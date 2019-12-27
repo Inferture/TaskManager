@@ -8,7 +8,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class TasksRepository {
-    private val tasksService = Api.tasksService
+    private val tasksService = Api.INSTANCE.tasksService
     private val coroutineScope = MainScope()
 
 
