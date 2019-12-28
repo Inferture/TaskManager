@@ -7,13 +7,10 @@
 
 
     <data>
-
         <variable
-
             name="currentUser"
             type="com.example.ultimatetaskmanager.network.UserInfo"
             />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,32 +19,6 @@
         android:layout_height="match_parent"
         tools:context=".HeaderFragment">
 
-        <!-- TODO: Update blank fragment layout -->
-
-
-
-
-        <!-- TODO: Update blank fragment layout
-
-
-
-         <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="0dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/disconnect"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/username_text"
-            tools:src="@tools:sample/avatars[3]" />
-
-        -->
-
-
-
 
         <Button
             android:id="@+id/edit_profile"
@@ -55,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/small_margin"
-            android:text="Edit profile"
+            android:text="@string/edit_profile_text"
             app:layout_constraintBottom_toTopOf="@+id/disconnect"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -69,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/small_margin"
-            android:text="Disconnect"
+            android:text="@string/disconnect_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

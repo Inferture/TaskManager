@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorElement">#41a6b5</color>
+    <color name="colorListTask">#9ad6d0</color>
+    <color name="colorListTask2">#d3f2ef</color>
+    <color name="colorBackground">#dfeddf</color>
 </resources>

@@ -32,7 +32,7 @@ class TaskFormActivity : AppCompatActivity() {
         var numTask = -1;
 
 
-        var args = TaskFormActivityArgs.fromBundle(intent?.extras!!)
+        val args = TaskFormActivityArgs.fromBundle(intent?.extras!!)
         numTask = args.numTask
 
 
@@ -51,10 +51,10 @@ class TaskFormActivity : AppCompatActivity() {
         when {
             intent?.action == Intent.ACTION_SEND -> {
                 if ("text/plain" == intent.type) {
-                    var intentText = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    val intentText = intent.getStringExtra(Intent.EXTRA_TEXT)
 
 
-                    var intentTitle = intentText.split('\n')[0]
+                    val intentTitle = intentText.split('\n')[0]
                     var intentDescription=""
                     if(intentText.split('\n').size>1)
                     {

@@ -12,7 +12,7 @@
     android:layout_height="match_parent"
     tools:context=".AuthenticationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!--  -->
 
     <Button
         android:id="@+id/auth_login"
@@ -21,7 +21,7 @@
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
-        android:text="Log In"
+        android:text="@string/log_in_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,7 @@
         android:layout_marginStart="@dimen/small_margin"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginEnd="@dimen/small_margin"
-        android:text="Sign Up"
+        android:text="@string/sign_up_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

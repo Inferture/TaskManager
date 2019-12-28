@@ -3,4 +3,26 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_hint">Title</string>
+    <string name="description_hint">Description</string>
+    <string name="add_button_text">Add</string>
+    <string name="back_button_text">Back</string>
+    <string name="firstname_label">Firstname:</string>
+    <string name="lastname_label">Lastname:</string>
+    <string name="email_label">Email:</string>
+    <string name="change_button_text">Change</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="choose_an_image">Choose an image</string>
+    <string name="take_a_picture">Take a picture</string>
+    <string name="log_in_text">Log In</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="edit_profile_text">Edit profile</string>
+    <string name="disconnect_text">Disconnect</string>
+    <string name="email_address_login_text">email address</string>
+    <string name="password_login_text">password</string>
+    <string name="log_in_login_text">Log in</string>
+    <string name="confirm_password_text">Confirm password</string>
+    <string name="sign_up_signup_text">Sign up</string>
+    <string name="delete_task_text">Delete task</string>
+    <string name="edit_task_text">Edit task</string>
 </resources>

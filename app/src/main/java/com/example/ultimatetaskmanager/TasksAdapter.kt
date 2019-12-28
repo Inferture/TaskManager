@@ -29,7 +29,10 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.i("MyStuff", "BindView, tasks length:" + tasks.count())
-        holder.bind(tasks[position])
+
+        TasksAdapter.holder=holder
+
+        holder.bind(tasks[position], position)
 
         holder.itemView.delete_task.setOnClickListener(
             {
@@ -51,6 +54,12 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
             {
                 share(holder);
             })
+
+    }
+
+    companion object
+    {
+        lateinit var holder: TaskViewHolder
 
     }
 
@@ -83,11 +92,13 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
 
     fun onDeleteTaskListener(task:Task)
     {
+        tasks.remove(task)
+        notifyDataSetChanged()
         coroutineScope.launch {
             Api.INSTANCE.tasksService.deleteTask(task.id)
-            tasks.remove(task)
-            notifyDataSetChanged()
+
         }
+
     }
 
     fun onEditTaskListener(taskNum:Int)
