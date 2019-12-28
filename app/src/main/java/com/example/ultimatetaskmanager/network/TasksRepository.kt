@@ -12,7 +12,6 @@ class TasksRepository {
     private val coroutineScope = MainScope()
 
 
-
     suspend fun loadTasks(): List<Task>? {
         val tasksResponse = tasksService.getTasks()
         return if (tasksResponse.isSuccessful) tasksResponse.body() else null
@@ -27,14 +26,17 @@ class TasksRepository {
     }
 
 
-
     suspend fun loadCreateTask(id: String, title: String, description:  String): Task? {
         val tasksResponse = tasksService.createTask(Task(id, title, description))
         Log.e("loadCreateTasks", tasksResponse.toString())
         return if (tasksResponse.isSuccessful) tasksResponse.body() else null
     }
 
-
+    suspend fun loadCreateTask(task: Task): Task? {
+        val tasksResponse = tasksService.createTask(task)
+        Log.e("loadCreateTasks", tasksResponse.toString())
+        return if (tasksResponse.isSuccessful) tasksResponse.body() else null
+    }
 
     suspend fun loadUpdateTask(id: String, title: String, description:  String): Task? {
         var task = Task(id, title, description)
@@ -47,4 +49,13 @@ class TasksRepository {
         return if (tasksResponse.isSuccessful) tasksResponse.body() else null
     }
 
+    suspend fun loadUpdateTask(task:Task): Task? {
+        Log.i("loadUpdateTasks: ","Task id:" + task.id);
+
+        val tasksResponse = tasksService.updateTask(task.id, task)
+
+        Log.e("loadUpdateTasks", tasksResponse.toString())
+
+        return if (tasksResponse.isSuccessful) tasksResponse.body() else null
+    }
 }

@@ -16,14 +16,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.ultimatetaskmanager.databinding.ActivityUserInfoBinding
 import com.example.ultimatetaskmanager.network.UserInfo
-import kotlinx.android.synthetic.main.activity_user_info.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
@@ -36,16 +37,21 @@ import java.io.IOException
 
 class UserInfoActivity : AppCompatActivity() {
 
+
+    private lateinit var binding: ActivityUserInfoBinding
+
+
     private val coroutineScope = MainScope()
     private val userViewModel by lazy {
         ViewModelProviders.of(this).get(UserViewModel::class.java)
     }
 
-    var tempString=""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_info)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_user_info)
+
         Log.i("MyStuff","create userinfoact")
 
 
@@ -54,7 +60,7 @@ class UserInfoActivity : AppCompatActivity() {
             if (it != null) {
 
                 Glide.with(this).load(it).apply(
-                    RequestOptions.circleCropTransform()).into(photo_view)
+                    RequestOptions.circleCropTransform()).into(binding.photoView)
             }
         })
 
@@ -62,56 +68,59 @@ class UserInfoActivity : AppCompatActivity() {
 
             if (it != null) {
 
-                userViewModel.userInfo=it;
-                text_firstname.setText(it.firstName);
-                text_lastname.setText(it.lastName);
-                text_email.setText(it.email);
 
-                edit_firstname.setText(it.firstName);
-                edit_lastname.setText(it.lastName);
-                edit_email.setText(it.email);
+                userViewModel.userInfo=it;
+                binding.apply{
+                    currentUser=it
+                    invalidateAll()
+                }
                 Glide.with(this).load(it.avatar).apply(
-                    RequestOptions.circleCropTransform()).into(photo_view)
+                    RequestOptions.circleCropTransform()).into(binding.photoView)
+
             }
         })
 
         Log.i("MyStuff","create stuff")
 
-        
-        text_firstname.setOnClickListener()
+
+        binding.textFirstname.setOnClickListener()
         {
-            edit_firstname.visibility = View.VISIBLE
-            change_firstname.visibility = View.VISIBLE
-            cancel_firstname.visibility = View.VISIBLE
-            it.visibility = View.INVISIBLE
-            edit_firstname.requestFocus();
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(edit_firstname, 0)
+            binding.apply {
+                editFirstname.visibility = View.VISIBLE
+                changeFirstname.visibility = View.VISIBLE
+                cancelFirstname.visibility = View.VISIBLE
+                textFirstname.visibility = View.INVISIBLE
+                editFirstname.requestFocus();
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(editFirstname, 0)
+            }
         }
-        change_firstname.setOnClickListener()
+        binding.changeFirstname.setOnClickListener()
         {
             var currentInfo = userViewModel.userInfo
-            userViewModel.updateUser(UserInfo(edit_firstname.text.toString(), currentInfo.lastName, currentInfo.email, currentInfo.avatar))
-            text_firstname.setText(edit_firstname.text.toString())
-            it.visibility=View.GONE
-            cancel_firstname.visibility=View.GONE
-            edit_firstname.visibility=View.INVISIBLE
-            text_firstname.visibility=View.VISIBLE
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
 
+            binding.apply {
+                currentUser=UserInfo(editFirstname.text.toString(), currentInfo.lastName, currentInfo.email, currentInfo.avatar)
+                userViewModel.updateUser(currentUser!!)
+
+                changeFirstname.visibility=View.GONE
+                cancelFirstname.visibility=View.GONE
+                editFirstname.visibility=View.INVISIBLE
+                textFirstname.visibility=View.VISIBLE
+                invalidateAll()
+
+
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(changeFirstname.windowToken, 0)
+            }
         }
 
-        cancel_firstname.setOnClickListener()
+        binding.cancelFirstname.setOnClickListener()
         {
             cancelFirstname()
         }
-        cancel_firstname.setOnClickListener()
-        {
-            view->cancelFirstname()
-        }
 
-        edit_firstname.setOnFocusChangeListener()
+        binding.editFirstname.setOnFocusChangeListener()
         {
             view:View, b:Boolean->
                 if(!b)
@@ -123,36 +132,44 @@ class UserInfoActivity : AppCompatActivity() {
 
 
 
-        text_lastname.setOnClickListener()
+        binding.textLastname.setOnClickListener()
         {
-            edit_lastname.visibility = View.VISIBLE
-            change_lastname.visibility = View.VISIBLE
-            cancel_lastname.visibility = View.VISIBLE
-            it.visibility = View.INVISIBLE
-            edit_lastname.requestFocus();
+            binding.apply {
+                editLastname.visibility = View.VISIBLE
+                changeLastname.visibility = View.VISIBLE
+                cancelLastname.visibility = View.VISIBLE
+                textLastname.visibility = View.INVISIBLE
+                editLastname.requestFocus();
+
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(edit_firstname, 0)
+            imm.showSoftInput(editFirstname, 0)
+            }
 
         }
         
-        change_lastname.setOnClickListener()
+        binding.changeLastname.setOnClickListener()
         {
             var currentInfo = userViewModel.userInfo
-            userViewModel.updateUser(UserInfo(currentInfo.firstName, edit_lastname.text.toString(), currentInfo.email, currentInfo.avatar))
-            text_lastname.setText(edit_lastname.text.toString())
-            it.visibility=View.GONE
-            cancel_lastname.visibility=View.GONE
-            edit_lastname.visibility=View.INVISIBLE
-            text_lastname.visibility=View.VISIBLE
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+            binding.apply {
+                currentUser=UserInfo(currentInfo.firstName, editLastname.text.toString(), currentInfo.email, currentInfo.avatar)
+                userViewModel.updateUser(currentUser!!)
+
+                changeLastname.visibility=View.GONE
+                cancelLastname.visibility=View.GONE
+                editLastname.visibility=View.INVISIBLE
+                textLastname.visibility=View.VISIBLE
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(changeLastname.windowToken, 0)
+                invalidateAll()
+            }
+
         }
 
-        cancel_lastname.setOnClickListener()
+        binding.cancelLastname.setOnClickListener()
         {
             cancelLastname()
         }
-        edit_lastname.setOnFocusChangeListener()
+        binding.editLastname.setOnFocusChangeListener()
         {
                 view:View, b:Boolean->
             if(!b)
@@ -161,38 +178,46 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
         
-        text_email.setOnClickListener()
+        binding.textEmail.setOnClickListener()
         {
-            edit_email.visibility = View.VISIBLE
-            change_email.visibility = View.VISIBLE
-            cancel_email.visibility = View.VISIBLE
-            it.visibility = View.INVISIBLE
-            edit_email.requestFocus()
+            binding.apply {
+                editEmail.visibility = View.VISIBLE
+                changeEmail.visibility = View.VISIBLE
+                cancelEmail.visibility = View.VISIBLE
+                textEmail.visibility = View.INVISIBLE
+                editEmail.requestFocus()
 
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(edit_email, 0)
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.showSoftInput(editEmail, 0)
+            }
+
 
         }
 
 
-        change_email.setOnClickListener()
+        binding.changeEmail.setOnClickListener()
         {
+
             var currentInfo = userViewModel.userInfo
-            userViewModel.updateUser(UserInfo(currentInfo.firstName, currentInfo.lastName, edit_email.text.toString(), currentInfo.avatar))
-            text_email.setText(edit_email.text.toString())
-            it.visibility=View.GONE
-            cancel_email.visibility=View.GONE
-            edit_email.visibility=View.INVISIBLE
-            text_email.visibility=View.VISIBLE
-            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(it.windowToken, 0)
+            binding.apply {
+                currentUser = UserInfo(currentInfo.firstName, currentInfo.lastName, editEmail.text.toString(), currentInfo.avatar)
+                userViewModel.updateUser(currentUser!!)
+
+                changeEmail.visibility=View.GONE
+                cancelEmail.visibility=View.GONE
+                editEmail.visibility=View.INVISIBLE
+                textEmail.visibility=View.VISIBLE
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(changeEmail.windowToken, 0)
+                //invalidateAll()
+            }
         }
 
-        cancel_email.setOnClickListener()
+        binding.cancelEmail.setOnClickListener()
         {
             cancelEmail()
         }
-        edit_email.setOnFocusChangeListener()
+        binding.editEmail.setOnFocusChangeListener()
         {
                 view:View, b:Boolean->
             if(!b)
@@ -201,8 +226,8 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
         
-        upload_image_button.setOnClickListener({ askStoragePermission() })
-        take_picture_button.setOnClickListener({ askCameraPermissionAndOpenCamera()})
+        binding.uploadImageButton.setOnClickListener({ askStoragePermission() })
+        binding.takePictureButton.setOnClickListener({ askCameraPermissionAndOpenCamera()})
         Log.i("MyStuff","OnCreateEnded")
     }
 
@@ -213,39 +238,46 @@ class UserInfoActivity : AppCompatActivity() {
         const val READ_STORAGE_PERMISSION_CODE = 3000;
         const val READ_STORAGE_REQUEST_CODE = 4001;
 
-
-
     }
 
     private fun cancelLastname()
     {
-        edit_lastname.setText(text_lastname.text.toString())
-        cancel_lastname.visibility=View.GONE
-        change_lastname.visibility=View.GONE
-        edit_lastname.visibility=View.INVISIBLE
-        text_lastname.visibility=View.VISIBLE
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(cancel_lastname.windowToken, 0)
+        binding.apply {
+            editLastname.setText(textLastname.text.toString())
+            cancelLastname.visibility=View.GONE
+            changeLastname.visibility=View.GONE
+            editLastname.visibility=View.INVISIBLE
+            textLastname.visibility=View.VISIBLE
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(cancelLastname.windowToken, 0)
+        }
+
     }
     private fun cancelFirstname()
     {
-        edit_firstname.setText(text_firstname.text.toString())
-        cancel_firstname.visibility=View.GONE
-        change_firstname.visibility=View.GONE
-        edit_firstname.visibility=View.INVISIBLE
-        text_firstname.visibility=View.VISIBLE
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(cancel_firstname.windowToken, 0)
+        binding.apply {
+            editFirstname.setText(binding.textFirstname.text.toString())
+            cancelFirstname.visibility=View.GONE
+            changeFirstname.visibility=View.GONE
+            editFirstname.visibility=View.INVISIBLE
+            textFirstname.visibility=View.VISIBLE
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(cancelFirstname.windowToken, 0)
+        }
+
     }
     private fun cancelEmail()
     {
-        edit_email.setText(text_email.text.toString())
-        cancel_email.visibility=View.GONE
-        change_email.visibility=View.GONE
-        edit_email.visibility=View.INVISIBLE
-        text_email.visibility=View.VISIBLE
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(cancel_email.windowToken, 0)
+        binding.apply {
+            editEmail.setText(textEmail.text.toString())
+            cancelEmail.visibility=View.GONE
+            changeEmail.visibility=View.GONE
+            editEmail.visibility=View.INVISIBLE
+            textEmail.visibility=View.VISIBLE
+            val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(cancelEmail.windowToken, 0)
+        }
+
     }
     private fun askStoragePermission()
     {
@@ -347,7 +379,7 @@ class UserInfoActivity : AppCompatActivity() {
         Log.i("MyStuff", "about to glide")
         // Afficher l'image
         Glide.with(this).load(image).apply(
-            RequestOptions.circleCropTransform()).into(photo_view)
+            RequestOptions.circleCropTransform()).into(binding.photoView)
 
 
         Log.i("MyStuff", "Handled photo ")
@@ -368,7 +400,8 @@ class UserInfoActivity : AppCompatActivity() {
         val selectedImageUri = data?.extras?.get("data") as? Uri
 
         Glide.with(this).load(data?.data).apply(
-            RequestOptions.circleCropTransform()).into(photo_view)
+            RequestOptions.circleCropTransform()).into(binding.photoView)
+
 
         Glide.with(this)
             .asBitmap()

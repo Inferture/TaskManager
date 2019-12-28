@@ -2,12 +2,15 @@ package com.example.ultimatetaskmanager
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_task.view.*
 import androidx.core.content.ContextCompat.startActivity
+import androidx.databinding.DataBindingUtil
+import com.example.ultimatetaskmanager.databinding.ItemTaskBinding
 import com.example.ultimatetaskmanager.network.Api
 import com.example.ultimatetaskmanager.network.TasksRepository
 import kotlinx.android.synthetic.main.fragment_task_form.view.*
@@ -25,7 +28,9 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
     private val coroutineScope = MainScope()
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
+        Log.i("MyStuff", "BindView, tasks length:" + tasks.count())
         holder.bind(tasks[position])
+
         holder.itemView.delete_task.setOnClickListener(
             {
                 onDeleteTaskListener(tasks[position])
@@ -65,7 +70,9 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
 
         parent.contraintLayoutTaskFormFragment
         context=parent.context
-        return TaskViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false))
+
+        return TaskViewHolder(DataBindingUtil.inflate<ItemTaskBinding>(LayoutInflater.from(parent.getContext()),
+            R.layout.item_task, parent, false))
 
     }
 

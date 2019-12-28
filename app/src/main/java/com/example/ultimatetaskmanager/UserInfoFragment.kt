@@ -7,13 +7,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.ultimatetaskmanager.databinding.FragmentUserInfoBinding
 import kotlinx.coroutines.MainScope
 
 
 class UserInfoFragment : Fragment() {
+
+
+    lateinit var binding:FragmentUserInfoBinding
 
     lateinit var inflaterContext:Context
 
@@ -29,10 +33,9 @@ class UserInfoFragment : Fragment() {
         // Inflate the layout for this fragment
         inflaterContext=inflater.context
 
-        var view = inflater.inflate(R.layout.fragment_user_info, container, false)
-
-        var backButton = view.findViewById<Button>(R.id.back_from_userinfos)
-        backButton.setOnClickListener()
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user_info,container, false)
+        var view = binding.root
+        binding.backFromUserinfos.setOnClickListener()
         {
             findNavController().navigate(R.id.action_userInfoFragment_to_mainActivity2)
         }

@@ -15,7 +15,6 @@ interface UserService {
     @PATCH("users/update_avatar")
     suspend fun updateAvatar(@Part avatar: MultipartBody.Part): Response<UserInfo>
 
-
     @PATCH("users")
     suspend fun updateUser(@Body user: UserInfo): Response<UserInfo>
 

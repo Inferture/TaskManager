@@ -7,21 +7,23 @@ import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_header.*
 
 
 class MainActivity : AppCompatActivity() {
 
-
+    private val userViewModel by lazy {
+        ViewModelProviders.of(this).get(UserViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
        super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
-
     }
 }

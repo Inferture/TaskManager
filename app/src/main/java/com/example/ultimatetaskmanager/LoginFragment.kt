@@ -11,12 +11,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import com.example.ultimatetaskmanager.databinding.FragmentLoginBinding
 import com.example.ultimatetaskmanager.network.Api
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -24,6 +25,9 @@ import java.lang.Exception
 
 
 class LoginFragment : Fragment() {
+
+
+    lateinit var binding: FragmentLoginBinding
 
     private val coroutineScope = MainScope()
     private val userViewModel by lazy {
@@ -35,22 +39,24 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var view =  inflater.inflate(R.layout.fragment_login, container, false)
 
-        var loginButton = view.findViewById<Button>(R.id.login)
-        loginButton.setOnClickListener()
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login,container, false)
+        var view =  binding.root
+
+        binding.login.setOnClickListener()
         {
-            if(email_text.text.toString().equals("") )
+            if(binding.emailText.text.toString().equals("") )
             {
                 Toast.makeText(context, "Email empty", Toast.LENGTH_LONG).show()
             }
-            else if(password_text.text.toString().equals(""))
+            else if(binding.passwordText.text.toString().equals(""))
             {
                 Toast.makeText(context, "Password empty", Toast.LENGTH_LONG).show()
             }
             else
             {
-                var loginInfos = LoginForm(email_text.text.toString(), password_text.text.toString())
+                var loginInfos = LoginForm(binding.emailText.text.toString(), binding.passwordText.text.toString())
                 var tokenResponse = login(loginInfos)
             }
         }

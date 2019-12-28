@@ -1,24 +1,22 @@
 package com.example.ultimatetaskmanager
 
-import android.content.ClipDescription
 import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.example.ultimatetaskmanager.network.TasksRepository
-import kotlinx.android.synthetic.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.ultimatetaskmanager.databinding.ActivityTaskFormBinding
 import kotlinx.android.synthetic.main.activity_task_form.*
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_task_form.*
 
 class TaskFormActivity : AppCompatActivity() {
+
+
+    private lateinit var binding: ActivityTaskFormBinding
+
 
     private val tasksViewModel by lazy {
         ViewModelProviders.of(this).get(TasksViewModel::class.java)
@@ -28,17 +26,26 @@ class TaskFormActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_task_form)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_task_form)
 
         var numTask = -1;
 
 
-        var args = TaskFormActivityArgs.fromBundle(intent?.extras!!)//nav_host_fragment_task_form.arguments
+        var args = TaskFormActivityArgs.fromBundle(intent?.extras!!)
         numTask = args.numTask
-        id=args.id
 
-        edit_description.setText(args.description)
-        edit_title.setText(args.title)
+
+        id=args.id
+        if(numTask>=0)
+        {
+            binding.currentTask=Task(id, args.title!!, args.description!!)
+            binding.validateTask.setText("Modify")
+        }
+        else
+        {
+            binding.currentTask=Task(id, "", "")
+        }
 
 
         when {
@@ -53,36 +60,32 @@ class TaskFormActivity : AppCompatActivity() {
                     {
                         intentDescription= intentText.split('\n')[1]
                     }
-                    //nav_host_fragment_task_form
-                    edit_title.setText(intentTitle)
-                    edit_description.setText(intentDescription)
-
-                    id="outsideId"
+                    id="outsideId"//Temporary
+                    binding.currentTask=Task(id, intentTitle, intentDescription)
                 }
             }
         }
 
-        validate_task.setOnClickListener({
+        binding.validateTask.setOnClickListener({
 
-            val title = edit_title.text.toString()
-            val description = edit_description.text.toString()
-
-            if(numTask<0)
-            {
-                AddTask(title,description)
+            binding.apply {
+                currentTask=Task(id,editTitle.text.toString(), editDescription.text.toString())
+                if(numTask<0)
+                {
+                    AddTask(currentTask!!)
+                }
+                else
+                {
+                    EditTask(currentTask!!)
+                }
             }
-            else
-            {
-                EditTask(numTask,title,description)
-            }
-
             nav_host_fragment_task_form.findNavController().navigate(R.id.action_taskFormFragment_to_mainActivity3)
 
         })
 
-        back_from_add_task.setOnClickListener({
+        binding.backFromAddTask.setOnClickListener({
 
-            if(edit_title.text.toString()!="" || edit_description.text.toString()!="")
+            if(binding.editTitle.text.toString()!="" || binding.editDescription.text.toString()!="")
             {
                 val builder = AlertDialog.Builder(this)
                 val positiveButtonClick = { dialog: DialogInterface, which: Int ->
@@ -98,20 +101,27 @@ class TaskFormActivity : AppCompatActivity() {
                     setNegativeButton(android.R.string.no, DialogInterface.OnClickListener(function = negativeButtonClick))
                     show()
                 }
-
             }
             else
             {
                 nav_host_fragment_task_form.findNavController().navigate(R.id.action_taskFormFragment_to_mainActivity3)
             }
         })
-
+        binding.invalidateAll()
     }
 
 
     fun AddTask(title:String, description: String)
     {
         tasksViewModel.createTask("lel",title,description)
+    }
+    fun AddTask(task:Task)
+    {
+        tasksViewModel.createTask(task)
+    }
+    fun EditTask(task:Task)
+    {
+        tasksViewModel.updateTask(task)
     }
     fun EditTask(numTask: Int, title:String, description: String)
     {

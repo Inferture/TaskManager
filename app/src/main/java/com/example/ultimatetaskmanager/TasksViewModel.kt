@@ -38,9 +38,21 @@ class TasksViewModel: ViewModel() {
         return tasks
     }
 
+    fun createTask(task:Task): LiveData<Task?> {
+        val tasks = MutableLiveData<Task?>()
+        coroutineScope.launch { tasks.postValue(tasksRepository.loadCreateTask(task)) }
+        return tasks
+    }
+
     fun updateTask(id: String, title: String, description:  String): LiveData<Task?> {
         val task = MutableLiveData<Task?>()
         coroutineScope.launch { task.postValue(tasksRepository.loadUpdateTask(id, title, description)) }
         return task
+    }
+
+    fun updateTask(task:Task): LiveData<Task?> {
+        val taskData = MutableLiveData<Task?>()
+        coroutineScope.launch { taskData.postValue(tasksRepository.loadUpdateTask(task)) }
+        return taskData
     }
 }

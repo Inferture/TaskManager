@@ -9,13 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.core.content.edit
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.example.ultimatetaskmanager.databinding.FragmentMainBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainFragment : Fragment() {
+
+
+    lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,16 +28,19 @@ class MainFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        var view = inflater.inflate(R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main,container, false)
+
+        var view = binding.root
 
 
-        var addTask = view.findViewById<FloatingActionButton>(R.id.add_task)
-
-        addTask.setOnClickListener({
+        binding.addTask.setOnClickListener({
             nav_host_fragment_main.findNavController().navigate(R.id.action_mainFragment_to_taskFormActivity)
         })
 
+
+
         var disconnectButton = view.findViewById<Button>(R.id.disconnect)
+
         disconnectButton.setOnClickListener(
             {
                 PreferenceManager.getDefaultSharedPreferences(inflater.context).edit {

@@ -7,10 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.example.ultimatetaskmanager.databinding.FragmentAuthenticationBinding
 import com.example.ultimatetaskmanager.network.Api
 
 class AuthenticationFragment : Fragment() {
+
+
+    lateinit var binding:FragmentAuthenticationBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -18,16 +23,15 @@ class AuthenticationFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
 
-        var view =  inflater.inflate(R.layout.fragment_authentication, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_authentication,container, false)
+        var view =  binding.root
 
-        var loginButton = view.findViewById<Button>(R.id.auth_login)
-        loginButton.setOnClickListener()
+        binding.authLogin.setOnClickListener()
         {
             findNavController().navigate(R.id.action_authenticationFragment_to_loginFragment)
         }
 
-        var signupButton = view.findViewById<Button>(R.id.auth_signup)
-        signupButton.setOnClickListener()
+        binding.authSignup.setOnClickListener()
         {
             findNavController().navigate(R.id.action_authenticationFragment_to_signupFragment)
         }
@@ -36,7 +40,6 @@ class AuthenticationFragment : Fragment() {
         {
             findNavController().navigate(R.id.action_authenticationFragment_to_mainActivity)
         }
-
         return view
     }
 
