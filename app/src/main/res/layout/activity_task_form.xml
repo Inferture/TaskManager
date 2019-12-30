@@ -46,8 +46,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/description_hint"
-            android:text="@={currentTask.description}"
             android:inputType="textMultiLine"
+            android:maxLines="10"
+            android:text="@={currentTask.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_title" />
