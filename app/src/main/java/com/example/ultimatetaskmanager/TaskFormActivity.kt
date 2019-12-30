@@ -69,7 +69,6 @@ class TaskFormActivity : AppCompatActivity() {
         binding.validateTask.setOnClickListener({
 
             binding.apply {
-                currentTask=Task(id,editTitle.text.toString(), editDescription.text.toString())
                 if(numTask<0)
                 {
                     AddTask(currentTask!!)

@@ -25,4 +25,5 @@
     <string name="sign_up_signup_text">Sign up</string>
     <string name="delete_task_text">Delete task</string>
     <string name="edit_task_text">Edit task</string>
+    <string name="profile_picture">Profile picture</string>
 </resources>

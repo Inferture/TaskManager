@@ -14,13 +14,24 @@ class TaskViewHolder(val binding:ItemTaskBinding) : RecyclerView.ViewHolder(bind
 
         if(counter%2==0)
         {
-            var secondColor = ContextCompat.getColor(binding.root.context, R.color.colorListTask2)
+            val secondColor = ContextCompat.getColor(binding.root.context, R.color.colorListTask2)
             binding.apply {
                 taskId.setBackgroundColor(secondColor)
                 taskTitle.setBackgroundColor(secondColor)
                 taskDescription.setBackgroundColor(secondColor)
                 editTask.setBackgroundColor(secondColor)
                 deleteTask.setBackgroundColor(secondColor)
+            }
+        }
+        else
+        {
+            val firstColor = ContextCompat.getColor(binding.root.context, R.color.colorListTask)
+            binding.apply {
+                taskId.setBackgroundColor(firstColor)
+                taskTitle.setBackgroundColor(firstColor)
+                taskDescription.setBackgroundColor(firstColor)
+                editTask.setBackgroundColor(firstColor)
+                deleteTask.setBackgroundColor(firstColor)
             }
         }
     }

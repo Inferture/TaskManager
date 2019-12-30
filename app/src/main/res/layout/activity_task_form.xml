@@ -13,7 +13,7 @@
             type="com.example.ultimatetaskmanager.Task" />
 
     </data>
-
+    <!--"@{currentTask.title}" -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,7 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:ems="10"
-            android:text="@{currentTask.title}"
+            android:text="@={currentTask.title}"
+
             android:hint="@string/title_hint"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,7 +46,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/description_hint"
-            android:text="@{currentTask.description}"
+            android:text="@={currentTask.description}"
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

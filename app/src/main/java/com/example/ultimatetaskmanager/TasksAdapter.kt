@@ -14,8 +14,7 @@ import com.example.ultimatetaskmanager.databinding.ItemTaskBinding
 import com.example.ultimatetaskmanager.network.Api
 import com.example.ultimatetaskmanager.network.TasksRepository
 import kotlinx.android.synthetic.main.fragment_task_form.view.*
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<TaskViewHolder>() {
@@ -27,6 +26,8 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
 
     private val coroutineScope = MainScope()
 
+    private lateinit var updateJob: Job
+
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         Log.i("MyStuff", "BindView, tasks length:" + tasks.count())
 
@@ -36,6 +37,7 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
 
         holder.itemView.delete_task.setOnClickListener(
             {
+                notifyItemRemoved(position)
                 onDeleteTaskListener(tasks[position])
             })
         holder.itemView.edit_task.setOnClickListener(
@@ -54,6 +56,10 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
             {
                 share(holder);
             })
+
+        updateJob = coroutineScope.launch {
+
+        }
 
     }
 
@@ -93,13 +99,25 @@ class TasksAdapter(private val tasks: MutableList<Task>) : RecyclerView.Adapter<
     fun onDeleteTaskListener(task:Task)
     {
         tasks.remove(task)
-        notifyDataSetChanged()
+
+
+
+        updateJob.cancel()
+
+        updateJob = coroutineScope.launch {
+            delay(500)
+            notifyDataSetChanged()
+        }
+
         coroutineScope.launch {
+
             Api.INSTANCE.tasksService.deleteTask(task.id)
 
         }
 
+
     }
+
 
     fun onEditTaskListener(taskNum:Int)
     {

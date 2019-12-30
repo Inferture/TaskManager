@@ -1,16 +1,21 @@
 package com.example.ultimatetaskmanager.network
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.squareup.moshi.Json
 import okhttp3.MultipartBody
 
 data class UserInfo(
 
     @field:Json(name = "firstname")
-    val firstName: String,
+    var firstName: String,
     @field:Json(name = "lastname")
-    val lastName: String,
+    var lastName: String,
     @field:Json(name = "email")
-    val email: String,
+    var email: String,
+
+
+
     @field:Json(name = "avatar")
-    val avatar: String?
+    var avatar: String?
 )

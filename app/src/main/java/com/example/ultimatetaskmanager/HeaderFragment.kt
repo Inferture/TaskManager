@@ -40,6 +40,23 @@ class HeaderFragment : Fragment() {
 
 
         Log.i("MyStuff", "end onCreateView")
+
+
+
+
+        userViewModel.getUserInfos().observe(this, Observer {
+            if (it != null) {
+                binding.currentUser=it
+                Log.i("MyStuff", "onCreate zz")
+                Glide.with(this).load(it.avatar)
+                    .apply(
+                    RequestOptions.circleCropTransform()).override(1000, 1000).into(binding.imageView)
+                //binding.invalidateAll()
+            }
+        })
+
+
+
         return view
     }
 
@@ -48,15 +65,7 @@ class HeaderFragment : Fragment() {
 
 
         Log.i("MyStuff", "onCreate")
-        userViewModel.getUserInfos().observe(this, Observer {
-            if (it != null) {
-                binding.currentUser=it
-                Log.i("MyStuff", "onCreate zz")
-               Glide.with(this).load(it.avatar).apply(
-                    RequestOptions.circleCropTransform()).into(binding.imageView)
-                //binding.invalidateAll()
-            }
-        })
+
         super.onCreate(savedInstanceState)
     }
 
